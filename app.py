@@ -1,8 +1,9 @@
-from flask import Flask, request, render_template, jsonify
 import os
+import tempfile
 import PyPDF2
 import re
 import json
+from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 import nltk
 from nltk.corpus import stopwords
@@ -11,24 +12,29 @@ import string
 from collections import Counter
 import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
 # Download required NLTK data
 try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
-    nltk.download('punkt')
+    try:
+        nltk.download('punkt', quiet=True)
+    except Exception as e:
+        logging.warning(f"Could not download punkt: {e}")
 
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
-    nltk.download('stopwords')
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here'
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-
-# Create uploads directory if it doesn't exist
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    try:
+        nltk.download('stopwords', quiet=True)
+    except Exception as e:
+        logging.warning(f"Could not download stopwords: {e}")
 
 # Job role keywords and requirements
 JOB_ROLES = {
@@ -79,20 +85,32 @@ def extract_text_from_pdf(file_path):
 
 def preprocess_text(text):
     """Clean and preprocess text"""
-    # Convert to lowercase
-    text = text.lower()
-    
-    # Remove punctuation
-    text = text.translate(str.maketrans('', '', string.punctuation))
-    
-    # Tokenize
-    tokens = word_tokenize(text)
-    
-    # Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    tokens = [token for token in tokens if token not in stop_words]
-    
-    return tokens
+    try:
+        # Convert to lowercase
+        text = text.lower()
+        
+        # Remove punctuation
+        text = text.translate(str.maketrans('', '', string.punctuation))
+        
+        # Tokenize - fallback to simple split if NLTK fails
+        try:
+            tokens = word_tokenize(text)
+        except:
+            tokens = text.split()
+        
+        # Remove stopwords - fallback to basic stopwords if NLTK fails
+        try:
+            stop_words = set(stopwords.words('english'))
+            tokens = [token for token in tokens if token not in stop_words]
+        except:
+            # Basic English stopwords as fallback
+            basic_stopwords = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'can', 'may', 'might', 'must', 'this', 'that', 'these', 'those'}
+            tokens = [token for token in tokens if token not in basic_stopwords]
+        
+        return tokens
+    except Exception as e:
+        logging.error(f"Error in text preprocessing: {e}")
+        return text.lower().split()
 
 def calculate_ats_score(resume_text, job_role):
     """Calculate ATS score based on job role requirements"""
@@ -221,15 +239,15 @@ def analyze_resume():
             return jsonify({"error": "Invalid job role selected"}), 400
         
         if file and file.filename.lower().endswith('.pdf'):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            
-            # Extract text from PDF
-            resume_text = extract_text_from_pdf(file_path)
-            
-            # Clean up uploaded file
-            os.remove(file_path)
+            # Use temporary file for serverless environment
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+                file.save(temp_file.name)
+                
+                # Extract text from PDF
+                resume_text = extract_text_from_pdf(temp_file.name)
+                
+                # Clean up temporary file
+                os.unlink(temp_file.name)
             
             if not resume_text.strip():
                 return jsonify({"error": "Could not extract text from PDF"}), 400
