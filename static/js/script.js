@@ -138,11 +138,11 @@ function showResults(data) {
     // Update score circle color based on score
     const scoreCircle = document.querySelector('.score-circle');
     if (data.ats_score >= 70) {
-        scoreCircle.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+        scoreCircle.style.background = 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)';
     } else if (data.ats_score >= 50) {
-        scoreCircle.style.background = 'linear-gradient(135deg, #ed8936 0%, #dd6b20 100%)';
+        scoreCircle.style.background = 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)';
     } else {
-        scoreCircle.style.background = 'linear-gradient(135deg, #f56565 0%, #e53e3e 100%)';
+        scoreCircle.style.background = 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)';
     }
     
     // Update breakdown scores
