@@ -4,7 +4,7 @@ A minimalist web application that analyzes resumes and provides ATS (Applicant T
 
 ## 🚀 Live Demo
 
-**Try it now:** [https://ai-resume-analyzer-coj73erz4.vercel.app](https://ai-resume-analyzer-coj73erz4.vercel.app)
+**Try it now:** [AI Resume Analyzer](https://ai-resume-analyzer-teal.vercel.app/)
 
 ## Features
 
@@ -180,7 +180,7 @@ For questions or issues, please open an issue on the GitHub repository or contac
 **Developed by:** Varun Kumar Singh  
 **Email:** varunkumarsingh818@gmail.com  
 **GitHub:** [@varunkumarsingh](https://github.com/varunkumarsingh)  
-**LinkedIn:** [Varun Kumar Singh](https://linkedin.com/in/varunkumarsingh)
+**LinkedIn:** [Varun Kumar Singh](https://www.linkedin.com/in/varun-kumar-singh-267951269/)
 
 ---
 
