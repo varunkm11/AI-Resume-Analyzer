@@ -34,10 +34,6 @@ venv.bak/
 instance/
 .webassets-cache
 
-# Uploads folder (temporary files)
-uploads/*
-!uploads/.gitkeep
-
 # IDE
 .vscode/
 .idea/
