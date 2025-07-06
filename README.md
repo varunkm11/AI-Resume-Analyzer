@@ -2,6 +2,10 @@
 
 A minimalist web application that analyzes resumes and provides ATS (Applicant Tracking System) scores based on job roles. Upload your PDF resume, select a target job role, and get detailed feedback on how to improve your resume for better ATS compatibility.
 
+## 🚀 Live Demo
+
+**Try it now:** [https://ai-resume-analyzer-coj73erz4.vercel.app](https://ai-resume-analyzer-coj73erz4.vercel.app)
+
 ## Features
 
 - **ATS Score Calculation**: Get a comprehensive score based on technical skills, soft skills, experience, and education
@@ -168,6 +172,15 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Support
 
 For questions or issues, please open an issue on the GitHub repository or contact the development team.
+
+---
+
+## 👨‍💻 Developer
+
+**Developed by:** Varun Kumar Singh  
+**Email:** varunkumarsingh818@gmail.com  
+**GitHub:** [@varunkumarsingh](https://github.com/varunkumarsingh)  
+**LinkedIn:** [Varun Kumar Singh](https://linkedin.com/in/varunkumarsingh)
 
 ---
 
