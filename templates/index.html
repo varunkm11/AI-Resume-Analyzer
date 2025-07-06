@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-file-alt"></i>
+                <h1>AI Resume Analyzer</h1>
+            </div>
+            <p class="subtitle">Get your ATS score and improve your resume for any role</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-card">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h2>Upload Your Resume</h2>
+                    <p>Upload your PDF resume and select a job role to get your ATS score</p>
+                    
+                    <form id="resumeForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="jobRole">Select Job Role</label>
+                            <select id="jobRole" name="job_role" required>
+                                <option value="">Choose a role...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="file-upload">
+                            <input type="file" id="resumeFile" name="resume" accept=".pdf" required>
+                            <label for="resumeFile" class="file-upload-label">
+                                <i class="fas fa-upload"></i>
+                                <span id="fileName">Choose PDF file</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="analyze-btn" id="analyzeBtn">
+                            <i class="fas fa-chart-line"></i>
+                            Analyze Resume
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-card">
+                    <div class="loading-spinner"></div>
+                    <h3>Analyzing Your Resume...</h3>
+                    <p>Please wait while we calculate your ATS score</p>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <div class="score-header">
+                        <div class="score-circle">
+                            <div class="score-number" id="atsScore">0</div>
+                            <div class="score-label">ATS Score</div>
+                        </div>
+                        <div class="score-info">
+                            <h2 id="scoreTitle">Your ATS Score</h2>
+                            <p id="scoreDescription">Based on analysis for <span id="analyzedRole"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-section">
+                        <h3>Score Breakdown</h3>
+                        <div class="breakdown-grid">
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <i class="fas fa-code"></i>
+                                    <span>Technical Skills</span>
+                                    <span class="breakdown-score" id="technicalScore">0/40</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="technicalProgress"></div>
+                                </div>
+                                <p class="breakdown-detail" id="technicalDetail">0 out of 0 skills found</p>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <i class="fas fa-users"></i>
+                                    <span>Soft Skills</span>
+                                    <span class="breakdown-score" id="softScore">0/20</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="softProgress"></div>
+                                </div>
+                                <p class="breakdown-detail" id="softDetail">0 out of 0 skills found</p>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>Experience</span>
+                                    <span class="breakdown-score" id="experienceScore">0/25</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="experienceProgress"></div>
+                                </div>
+                                <p class="breakdown-detail" id="experienceDetail">0 out of 0 keywords found</p>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-header">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Education</span>
+                                    <span class="breakdown-score" id="educationScore">0/15</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="educationProgress"></div>
+                                </div>
+                                <p class="breakdown-detail" id="educationDetail">0 out of 0 keywords found</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations-section">
+                        <h3>Recommendations</h3>
+                        <div class="recommendations-list" id="recommendationsList">
+                            <!-- Recommendations will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="secondary-btn" onclick="analyzeAnother()">
+                            <i class="fas fa-redo"></i>
+                            Analyze Another Resume
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
