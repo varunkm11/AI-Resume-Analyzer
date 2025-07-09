@@ -177,9 +177,8 @@ For questions or issues, please open an issue on the GitHub repository or contac
 
 ## 👨‍💻 Developer
 
-**Developed by:** Varun Kumar Singh  
-**Email:** varunkumarsingh818@gmail.com  
-**GitHub:** [@varunkumarsingh](https://github.com/varunkumarsingh)  
+**Developed by:** Varun Kumar Singh   
+**GitHub:** [varunkm11](https://github.com/varunkumarsingh)  
 **LinkedIn:** [Varun Kumar Singh](https://www.linkedin.com/in/varun-kumar-singh-267951269/)
 
 ---
